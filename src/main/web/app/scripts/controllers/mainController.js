@@ -16,7 +16,7 @@ angular.module('BootstrapApplication.controllers')
         };
 
         $scope.refreshStatus = function() {
-            console.info("Refresh");
+            console.info('Refresh');
         };
 
         $scope.closeAlert = function (index) {
