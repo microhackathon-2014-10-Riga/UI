@@ -3,28 +3,26 @@
 </alert>
 
 <div>
-    <h3>Welcome in the bootstrap gui microservice</h3>
+    <h3>Loan application</h3>
 
     <p class="lead">
-
-    <h4>Find the city</h4>
 
     <form role="form">
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="name">
+            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="app.name">
         </div>
         <div class="form-group">
             <label for="surname">Surname</label>
-            <input type="text" class="form-control" id="surname" placeholder="Surname" ng-model="surname">
+            <input type="text" class="form-control" id="surname" placeholder="Surname" ng-model="app.surname">
         </div>
         <div class="form-group">
             <label for="age">Age</label>
-            <input type="text" class="form-control" id="surname" placeholder="99" ng-model="age">
+            <input type="text" class="form-control" id="age" placeholder="99" ng-model="app.age">
         </div>
         <div class="form-group">
             <label for="jobPosition">Job position</label>
-            <select class="form-control" id="jobPosition" ng-model="jobPosition">
+            <select class="form-control" id="jobPosition" ng-model="app.jobPosition">
                 <option>IT</option>
                 <option>FINANCIAL SECTOR</option>
                 <option>OTHER</option>
@@ -32,11 +30,13 @@
         </div>
         <div class="form-group">
             <label for="loanAmount">Loan amount</label>
-            <input type="text" class="form-control" id="loanAmount" placeholder="1000" ng-model="loanAmount">
+            <input type="text" class="form-control" id="loanAmount" placeholder="1000" ng-model="app.loanAmount">
         </div>
         <button type="button" class="btn btn-default" ng-click="applyForLoan()">Apply for loan</button>
+        <button type="button" class="btn" ng-click="refreshStatus()">Refresh status of {{loanId}}</button>
     </form>
 
     <hr/>
+
 
 </div>
