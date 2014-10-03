@@ -1,6 +1,6 @@
 package com.ofg.microservice
-
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
+import groovy.transform.Canonical
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,10 +25,35 @@ class LoanApplicationStatusController {
     @RequestMapping(method = GET, value = "/{loanId}")
     String checkStatus(@PathVariable("loanId") String loanId) {
         log.debug("Checking status of: $loanId")
-        return "Accepted"
+        Boolean decisionAboutTheLoan = serviceRestClient.forService("loan-application-decision-maker").
+                get().
+                onUrl("/api/loanApplication/$loanId").
+                andExecuteFor().
+                aResponseEntity().
+                ofType(Decision).
+                body.result
+
+        log.debug("DECISION ABOUT THE LOAN: $loanId is: $decisionAboutTheLoan")
+
+
+        return new Status(decisionAboutTheLoan, null)
     }
+
+
 
 }
 
 
+@TypeChecked
+@Canonical
+class Status {
+    Boolean decisionAboutTheLoan
+    String offers
+}
+
+class Decision {
+    String applicationId
+    Long id
+    Boolean result
+}
 
