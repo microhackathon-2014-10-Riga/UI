@@ -16,7 +16,7 @@ String currentLogFile = "logs/application.log"
 String rollingFileNamePattern = "application.%d{yyyy-MM-dd}.log.zip"
 int rollingFileMaxHistory = 7
 
-println """Starting logback
+println """Starting Logback
 To set your own log file, start it with
   java -Dlogback.configurationFile=/path/to/my-logback.groovy
 ScanTime is set to $scanTime
