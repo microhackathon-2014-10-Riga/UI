@@ -26,7 +26,7 @@ angular.module('BootstrapApplication.controllers')
                 .refreshApplicationStatus($scope.loanId)
                 .success(function (resultObj) {
                     var decision = resultObj.decisionAboutTheLoan;
-                    displayMsg('Result is: ' + (decision? "accepted" : "rejected"));
+                    displayMsg('Result is: ' + (decision? 'accepted' : 'rejected'));
                 })
                 .error(function(data, status) {
                     displayMsg('Error in status: ' + data + '. ' + status);
