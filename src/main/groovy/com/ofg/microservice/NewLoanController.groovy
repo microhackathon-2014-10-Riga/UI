@@ -1,5 +1,7 @@
 package com.ofg.microservice
 
+import com.codahale.metrics.Counter
+import com.codahale.metrics.MetricRegistry
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
@@ -19,14 +21,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST
 @RequestMapping('/application')
 class NewLoanController {
     private final ServiceRestClient serviceRestClient
+    private final Counter counter
 
     @Autowired
-    NewLoanController(ServiceRestClient serviceRestClient) {
+    NewLoanController(ServiceRestClient serviceRestClient, MetricRegistry metricRegistry) {
         this.serviceRestClient = serviceRestClient
+        counter = metricRegistry.counter("application.new")
     }
 
     @RequestMapping(method = POST)
     String apply(@RequestBody ApplicationForm applicationForNewLoan) {
+        counter.inc()
         log.debug("NEW APPLICATION RECEIVED FROM WEB: $applicationForNewLoan")
         String loanId = generateUniqueId(applicationForNewLoan)
         log.debug("LoanID assigned: $loanId")

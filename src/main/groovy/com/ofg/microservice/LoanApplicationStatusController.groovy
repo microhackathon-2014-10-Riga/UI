@@ -1,4 +1,7 @@
 package com.ofg.microservice
+
+import com.codahale.metrics.Counter
+import com.codahale.metrics.MetricRegistry
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
 import groovy.transform.Canonical
 import groovy.transform.TypeChecked
@@ -16,14 +19,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET
 @RequestMapping('/application')
 class LoanApplicationStatusController {
     private final ServiceRestClient serviceRestClient
+    private final Counter counter
 
     @Autowired
-    LoanApplicationStatusController(ServiceRestClient serviceRestClient) {
+    LoanApplicationStatusController(ServiceRestClient serviceRestClient, MetricRegistry metricRegistry) {
         this.serviceRestClient = serviceRestClient
+        counter = metricRegistry.counter('application.status')
     }
 
     @RequestMapping(method = GET, value = "/{loanId}")
     String checkStatus(@PathVariable("loanId") String loanId) {
+        counter.inc()
         log.debug("Checking status of: $loanId")
         Boolean decisionAboutTheLoan = serviceRestClient.forService("loan-application-decision-maker").
                 get().
