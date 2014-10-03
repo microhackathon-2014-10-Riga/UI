@@ -10,11 +10,11 @@
     <form role="form">
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="app.name">
+            <input type="text" class="form-control" id="name" placeholder="Name" ng-model="app.firstName">
         </div>
         <div class="form-group">
             <label for="surname">Surname</label>
-            <input type="text" class="form-control" id="surname" placeholder="Surname" ng-model="app.surname">
+            <input type="text" class="form-control" id="surname" placeholder="Surname" ng-model="app.lastName">
         </div>
         <div class="form-group">
             <label for="age">Age</label>
@@ -24,7 +24,7 @@
             <label for="jobPosition">Job position</label>
             <select class="form-control" id="jobPosition" ng-model="app.jobPosition">
                 <option>IT</option>
-                <option>FINANCIAL SECTOR</option>
+                <option label="FINANCIAL SECTOR">FINANCIAL_SECTOR</option>
                 <option>OTHER</option>
             </select>
         </div>

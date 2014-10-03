@@ -6,10 +6,10 @@ angular.module('BootstrapApplication.services')
             applyForLoan: function (app, successFn) {
                 successFn(4242);
                 $http({
-                    url: '/loan/application/' + app,
+                    url: '/application',
                     dataType: 'json',
                     method: 'POST',
-                    data: '',
+                    data: JSON.stringify(app),
                     headers: {
                         'Content-Type': 'application/vnd.com.ofg.twitter-places-analyzer.v1+json'
                     }
