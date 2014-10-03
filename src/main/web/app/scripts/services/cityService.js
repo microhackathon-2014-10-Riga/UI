@@ -15,6 +15,17 @@ angular.module('BootstrapApplication.services')
                 }).success(function (data) {
                     successFn(data);
                 });
+            },
+            refreshApplicationStatus: function(loanId) {
+                return $http({
+                    url: '/application/' + loanId,
+                    dataType: 'json',
+                    method: 'GET',
+                    data: '',
+                    headers: {
+                        'Content-Type': 'application/vnd.com.ofg.twitter-places-analyzer.v1+json'
+                    }
+                });
             }
         };
     }

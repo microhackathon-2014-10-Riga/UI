@@ -12,11 +12,16 @@ angular.module('BootstrapApplication.controllers')
         $scope.applyForLoan = function () {
             CityService.applyForLoan($scope.app, function (loanId) {
                 $scope.loanId = loanId;
+                $scope.alerts = [{msg: 'Submitted, please refresh status'}]
             });
         };
 
-        $scope.refreshStatus = function() {
-            console.info('Refresh');
+        $scope.refreshStatus = function () {
+            CityService
+                .refreshApplicationStatus($scope.loanId)
+                .success(function (result) {
+                    $scope.alerts = [{msg: 'Result is: ' + result}]
+                });
         };
 
         $scope.closeAlert = function (index) {
