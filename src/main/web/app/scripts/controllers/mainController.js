@@ -17,7 +17,7 @@ angular.module('BootstrapApplication.controllers')
                     displayMsg('Submitted, please refresh status');
                 })
                 .error(function(data, status) {
-                    displayMsg('Error: ' + data + ". " + status);
+                    displayMsg('Error: ' + data + '. ' + status);
                 });
         };
 
@@ -28,7 +28,7 @@ angular.module('BootstrapApplication.controllers')
                     displayMsg('Result is: ' + result);
                 })
                 .error(function(data, status) {
-                    displayMsg('Error in status: ' + data + ". " + status + err);
+                    displayMsg('Error in status: ' + data + '. ' + status);
                 });
         };
 
@@ -37,6 +37,8 @@ angular.module('BootstrapApplication.controllers')
         };
 
         function displayMsg(text) {
-            $scope.alerts = [{msg: text}]
+            $scope.alerts = [
+                {msg: text}
+            ];
         }
     }]);
