@@ -82,12 +82,20 @@ class ApplicationForm {
 @TypeChecked
 @ToString
 class LoanApplication {
+    String firstName
+    String lastName
+    Integer age
+    String jobPosition
     BigDecimal amount
     String loanId
 
-    LoanApplication(ApplicationForm applicationForNewLoan, String loanId) {
+    LoanApplication(ApplicationForm applicationForm, String loanId) {
+        this.firstName = applicationForm.name
+        this.lastName = applicationForm.surname
+        this.age = applicationForm.age
+        this.jobPosition = applicationForm.jobPosition
+        this.amount = applicationForm.amount
         this.loanId = loanId
-        amount = applicationForNewLoan.amount
     }
 }
 
