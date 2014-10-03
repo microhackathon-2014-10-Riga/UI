@@ -25,7 +25,7 @@ class LoanApplicationStatusController {
     @RequestMapping(method = GET, value = "/{loanId}")
     String checkStatus(@PathVariable("loanId") String loanId) {
         log.debug("Checking status of: $loanId")
-        return "OK"
+        return "Accepted"
     }
 
 }

@@ -3,8 +3,8 @@
 angular.module('BootstrapApplication.services')
     .factory('CityService', ['$http', function ($http) {
         return {
-            applyForLoan: function (app, successFn) {
-                $http({
+            applyForLoan: function (app) {
+                return $http({
                     url: '/application',
                     dataType: 'json',
                     method: 'POST',
@@ -12,8 +12,6 @@ angular.module('BootstrapApplication.services')
                     headers: {
                         'Content-Type': 'application/vnd.com.ofg.twitter-places-analyzer.v1+json'
                     }
-                }).success(function (data) {
-                    successFn(data);
                 });
             },
             refreshApplicationStatus: function(loanId) {
