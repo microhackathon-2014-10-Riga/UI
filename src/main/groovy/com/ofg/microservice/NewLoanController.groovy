@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST
@@ -57,14 +58,25 @@ class NewLoanController {
     }
 
     private HttpStatus send(Object stuffToSend, String serviceAlias, String url) {
-        HttpStatus clientServiceResponseStatus = serviceRestClient.forService(serviceAlias).
-                post().
-                onUrl(url).
-                body(stuffToSend).
-                withHeaders().
-                contentType(MediaType.APPLICATION_JSON).
-                andExecuteFor().aResponseEntity().ofType(Object).statusCode
-        return clientServiceResponseStatus
+        try {
+            return serviceRestClient.forService(serviceAlias).
+                    post().
+                    onUrl(url).
+                    body(stuffToSend).
+                    withHeaders().
+                    contentType(MediaType.APPLICATION_JSON).
+                    andExecuteFor().aResponseEntity().ofType(Object).statusCode
+        } catch(Exception e) {
+            log.error("Failed", e)
+            throw new CollaboratorError(e)
+        }
+    }
+}
+
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+class CollaboratorError extends RuntimeException {
+    CollaboratorError(Throwable throwable) {
+        super("Collaborator error: " + throwable.message, throwable)
     }
 }
 
