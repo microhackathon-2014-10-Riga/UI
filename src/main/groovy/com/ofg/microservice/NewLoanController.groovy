@@ -27,14 +27,17 @@ class NewLoanController {
 
     @RequestMapping(method = POST)
     String apply(@RequestBody ApplicationForm applicationForNewLoan) {
-        log.debug("We got new application: $applicationForNewLoan")
+        log.debug("NEW APPLICATION RECEIVED FROM WEB: $applicationForNewLoan")
         String loanId = generateUniqueId(applicationForNewLoan)
+        log.debug("LoanID assigned: $loanId")
         Client client = new Client(applicationForNewLoan, loanId)
+        log.debug("SENDING NEW CLIENT to ClientService: $client")
         HttpStatus clientServiceResponseStatus = send(client, "client-service", "/api/client")
-        validate(clientServiceResponseStatus)
+        log.debug("Received $clientServiceResponseStatus from ClientService")
         LoanApplication loanApplication = new LoanApplication(applicationForNewLoan, loanId)
+        log.debug("SENDING NEW Application to applciation service: $applicationForNewLoan")
         HttpStatus applicationServiceResponseStatus = send(loanApplication, "loan-application-service", "/api/loanApplication")
-        validate(applicationServiceResponseStatus)
+        log.debug("Received $applicationServiceResponseStatus from ApplicationService")
         return loanId
     }
 
@@ -72,6 +75,7 @@ class ApplicationForm {
 }
 
 @TypeChecked
+@ToString
 class LoanApplication {
     BigDecimal amount
     String loanId
@@ -83,6 +87,7 @@ class LoanApplication {
 }
 
 @TypeChecked
+@ToString
 class Client {
     String firstName
     String lastName
