@@ -4,6 +4,7 @@ import com.codahale.metrics.Counter
 import com.codahale.metrics.MetricRegistry
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
 import groovy.transform.Canonical
+import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 import static org.springframework.web.bind.annotation.RequestMethod.GET
 
 @Slf4j
-@TypeChecked
 @RestController
 @RequestMapping('/application')
+@CompileStatic
 class LoanApplicationStatusController {
     private final ServiceRestClient serviceRestClient
     private final Counter counter
@@ -28,7 +29,7 @@ class LoanApplicationStatusController {
     }
 
     @RequestMapping(method = GET, value = "/{loanId}")
-    String checkStatus(@PathVariable("loanId") String loanId) {
+    Status checkStatus(@PathVariable("loanId") String loanId) {
         counter.inc()
         log.debug("Checking status of: $loanId")
         Boolean decisionAboutTheLoan = serviceRestClient.forService("loan-application-decision-maker").
@@ -40,7 +41,6 @@ class LoanApplicationStatusController {
                 body.result
 
         log.debug("DECISION ABOUT THE LOAN: $loanId is: $decisionAboutTheLoan")
-
 
         return new Status(decisionAboutTheLoan, null)
     }

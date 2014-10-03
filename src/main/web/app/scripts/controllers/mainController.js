@@ -24,8 +24,9 @@ angular.module('BootstrapApplication.controllers')
         $scope.refreshStatus = function () {
             CityService
                 .refreshApplicationStatus($scope.loanId)
-                .success(function (result) {
-                    displayMsg('Result is: ' + result);
+                .success(function (resultObj) {
+                    var decision = resultObj.decisionAboutTheLoan;
+                    displayMsg('Result is: ' + (decision? "accepted" : "rejected"));
                 })
                 .error(function(data, status) {
                     displayMsg('Error in status: ' + data + '. ' + status);
