@@ -14,9 +14,9 @@ angular.module('BootstrapApplication.services')
                     }
                 });
             },
-            refreshApplicationStatus: function(loanId) {
+            refreshApplicationStatus: function(loanId, clientId) {
                 return $http({
-                    url: '/application/' + loanId,
+                    url: '/application/' + loanId + '/' + clientId,
                     dataType: 'json',
                     method: 'GET',
                     data: '',

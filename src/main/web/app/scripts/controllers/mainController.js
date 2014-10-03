@@ -22,11 +22,13 @@ angular.module('BootstrapApplication.controllers')
         };
 
         $scope.refreshStatus = function () {
+            var clientId = $scope.app.name + '_' + $scope.app.surname;
             CityService
-                .refreshApplicationStatus($scope.loanId)
+                .refreshApplicationStatus($scope.loanId, clientId)
                 .success(function (resultObj) {
-                    var decision = resultObj.decisionAboutTheLoan;
-                    displayMsg('Result is: ' + (decision? 'accepted' : 'rejected'));
+                    var decision = (resultObj.decisionAboutTheLoan ? 'accepted' : 'rejected');
+                    var offers = resultObj.offers? resultObj.offers : 'none';
+                    displayMsg('Result is: ' + decision + ', offer: ' + offers);
                 })
                 .error(function(data, status) {
                     displayMsg('Error in status: ' + data + '. ' + status);
