@@ -14,7 +14,8 @@ angular.module('BootstrapApplication.services')
                         'Content-Type': 'application/vnd.com.ofg.twitter-places-analyzer.v1+json'
                     }
                 }).success(function (data) {
-                    //successFn(data);
+                    console.info(data);
+//                    successFn(data);
                 });
             }
         };
