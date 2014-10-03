@@ -1,4 +1,5 @@
 package com.ofg.microservice
+
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
 import groovy.transform.ToString
 import groovy.transform.TypeChecked
@@ -27,7 +28,7 @@ class NewLoanController {
     @RequestMapping(method = POST)
     String apply(@RequestBody ApplicationForm applicationForNewLoan) {
         log.debug("We got new application: $applicationForNewLoan")
-        String loanId =  applicationForNewLoan.name + "/" + applicationForNewLoan.surname + "/" + UUID.randomUUID()
+        String loanId = generateUniqueId(applicationForNewLoan)
         Client client = new Client(applicationForNewLoan, loanId)
         HttpStatus clientServiceResponseStatus = send(client, "client-service", "/api/client")
         validate(clientServiceResponseStatus)
@@ -35,6 +36,10 @@ class NewLoanController {
         HttpStatus applicationServiceResponseStatus = send(loanApplication, "loan-application-service", "/api/loanApplication")
         validate(applicationServiceResponseStatus)
         return loanId
+    }
+
+    private String generateUniqueId(ApplicationForm applicationForNewLoan) {
+        applicationForNewLoan.name + "_" + applicationForNewLoan.surname + "_" + UUID.randomUUID()
     }
 
     private void validate(HttpStatus clientServiceResponseStatus) {
