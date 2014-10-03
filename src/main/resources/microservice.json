@@ -2,6 +2,10 @@
     "europe": {
         "this": "lt/microhackathon/ui",
         "dependencies": {
+            "marketting-offer-generator": "lt/microhackathon/marketting-offer-generator",
+            "loan-application-decision-maker": "lt/microhackathon/loan-application-decision-maker",
+            "client-service": "lt/microhackathon/client-service",
+            "loan-application-service": "lt/microhackathon/loan-application-service"
         }
     }
 }
