@@ -1,6 +1,8 @@
 package com.ofg.microservice
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
+import groovy.transform.ToString
 import groovy.transform.TypeChecked
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST
 
+@Slf4j
 @TypeChecked
 @RestController
 @RequestMapping('/application')
@@ -23,37 +26,37 @@ class NewLoanController {
 
     @RequestMapping(method = POST)
     String apply(@RequestBody ApplicationForm applicationForNewLoan) {
+        log.debug("We got new application: $applicationForNewLoan")
         String loanId =  applicationForNewLoan.name + "/" + applicationForNewLoan.surname + "/" + UUID.randomUUID()
         Client client = new Client(applicationForNewLoan, loanId)
-        HttpStatus clientServiceResponseStatus = serviceRestClient.forService("client-service").
-                post().
-                onUrl("/api/client").
-                body(client).
-                withHeaders().
-                    contentType(MediaType.APPLICATION_JSON).
-                andExecuteFor().aResponseEntity().ofType(Object).statusCode
+        HttpStatus clientServiceResponseStatus = send(client, "client-service", "/api/client")
+        validate(clientServiceResponseStatus)
+        LoanApplication loanApplication = new LoanApplication(applicationForNewLoan, loanId)
+        HttpStatus applicationServiceResponseStatus = send(loanApplication, "loan-application-service", "/api/loanApplication")
+        validate(applicationServiceResponseStatus)
+        return loanId
+    }
 
-        if(clientServiceResponseStatus.'2xxSuccessful') {
+    private void validate(HttpStatus clientServiceResponseStatus) {
+        if (clientServiceResponseStatus.'2xxSuccessful') {
             throw new RuntimeException("fuckit")
         }
+    }
 
-        HttpStatus applicationServiceResponseStatus = serviceRestClient.forService("loan-application-service").
+    private HttpStatus send(Object stuffToSend, String serviceAlias, String url) {
+        HttpStatus clientServiceResponseStatus = serviceRestClient.forService(serviceAlias).
                 post().
-                onUrl("api/loanApplication").
-                body(new LoanApplication(applicationForNewLoan, loanId)).
+                onUrl(url).
+                body(stuffToSend).
                 withHeaders().
                 contentType(MediaType.APPLICATION_JSON).
                 andExecuteFor().aResponseEntity().ofType(Object).statusCode
-
-        if(applicationServiceResponseStatus.'2xxSuccessful') {
-            throw new RuntimeException("fuckit2")
-        }
-
-        return loanId
+        return clientServiceResponseStatus
     }
 }
 
 @TypeChecked
+@ToString
 //TODO: validation
 class ApplicationForm {
     String name
