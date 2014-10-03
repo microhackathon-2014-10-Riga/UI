@@ -19,7 +19,7 @@ Inside you will find [bower](http://bower.io/) for javascript dependency managem
 Before first use, build your whole application with `gradle build`. It will download auto-magically all npms and bower dependencies.
 
 Then run you application (for example from Idea, just run main in `com.ofg.microservice.Application` specifying 
-the correct -Dspring.profiles.active).
+the correct `-Dspring.profiles.active`).
 
 Finally go to `src/main/web` and type `grunt serve`. This will run a local webserver on port 9000, your application will 
 automatically open in the browser and from now on on every change in you webapp the browser will automatically refresh
